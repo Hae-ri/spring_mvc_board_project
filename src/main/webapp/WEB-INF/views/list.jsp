@@ -23,18 +23,19 @@
 		
 		<c:forEach items="${list}" var="dto">
 			<tr>
-				<td>${dto.bId }</td>
+				<td align="center">${dto.bId }</td>
 				<td>
-					<a href="content_view?bId=${dto.bId }">${dto.bTitle }</a>
+					<c:forEach begin="1" end="${dto.bIndent }">&nbsp;&nbsp;&nbsp;</c:forEach>
+					<a href="content_view?bId=${dto.bId }">${dto.bTitle }</a>		
 				</td>
-				<td>${dto.bName }</td>
-				<td>${dto.bDate }</td>
-				<td>${dto.bHit }</td>
+				<td align="center">${dto.bName }</td>
+				<td align="center">${dto.bDate }</td>
+				<td align="center">${dto.bHit }</td>
 			</tr>
 		</c:forEach>
 		
 		<tr>
-			<td colspan="5"><a href="write_view">글쓰기</a></td>
+			<td align="right" colspan="5"><a href="write_view">글쓰기</a></td>
 		</tr>
 	</table>
 </body>

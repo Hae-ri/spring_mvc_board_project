@@ -41,8 +41,13 @@ public class BController {
 		} 
 		
 		@RequestMapping(value="/reply_view") // 덧글 쓰기 화면
-		public String reply_view() {
+		public String reply_view(HttpServletRequest request, Model model) {
 			
+			model.addAttribute("request", request);
+			
+			command = new BReplyViewCommand();
+			command.excute(model);
+				
 			return "reply_view";
 		} 
 		
@@ -57,7 +62,7 @@ public class BController {
 			return "redirect:list"; // 글쓰기 후 list로 보냄/@RequestMapping(value="/list")
 		} 
 		
-		@RequestMapping(value="/modify", method=RequestMethod.POST) // 글수정 기능
+		@RequestMapping(value="/modify") // 글수정 기능
 		public String modify(HttpServletRequest request, Model model) {
 			
 			model.addAttribute("request", request);
@@ -80,7 +85,12 @@ public class BController {
 		}
 		
 		@RequestMapping(value="/reply") // 덧글쓰기 기능
-		public String reply() {
+		public String reply(HttpServletRequest request, Model model) {
+			
+			model.addAttribute("request", request);
+			
+			command = new BReplyCommand();
+			command.excute(model);
 			
 			return "redirect:list"; // 덧글 작성 후 list로 보냄/@RequestMapping(value="/list")
 		}

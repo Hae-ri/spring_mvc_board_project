@@ -9,7 +9,7 @@
 <body>
 	<h2>자유게시판 글보기</h2><hr>
 	<table width="400" cellpadding="0" cellspacing="0" border="1">
-		<form action="modify" method="post">
+		<form action="modify">
 		<input type="hidden" name="bid" value="${content_view.bId }">
 				
 			<tr>
@@ -39,7 +39,7 @@
 			<tr>
 				<td colspan="2" align="right">
 					<a href="list">글 목록 보기</a>&nbsp;&nbsp;&nbsp;
-					<a href="reply_view?bId=${content_view.bId }">답변쓰기</a>&nbsp;&nbsp;&nbsp;
+					<a href="reply_view?bId=${content_view.bId }">답글쓰기</a>&nbsp;&nbsp;&nbsp;
 					<a href="delete?bId=${content_view.bId }">글 삭제</a>
 				</td>
 			</tr>		
