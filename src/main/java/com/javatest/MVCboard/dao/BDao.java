@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.naming.Context;
@@ -75,6 +76,140 @@ public class BDao {
 		return dtos;
 	}
 	
+	public void write(String bName, String bTitle, String bContent) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String query ="INSERT INTO mvc_board(bId, bName, bTitle, bContent, bHit, bGroup, bStep, bIndent) values (mvc_board_seq.nextval, ?, ?, ?, 0, mvc_board_seq.currval, 0, 0)";
+		
+		try {
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(query); // sql문 실행
+			
+			pstmt.setString(1, bName);
+			pstmt.setString(2, bTitle);
+			pstmt.setString(3, bContent);
+			
+			int dbFlag = pstmt.executeUpdate(); // 성공하면 1 반환
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) pstmt.close();
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
+	public BDto contentView(String strId) {
+		
+		BDto dto = null;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = dataSource.getConnection();
+			String query = "select * from MVC_BOARD where bId=?";
+			pstmt = conn.prepareStatement(query); // sql문 실행
+			pstmt.setInt(1, Integer.parseInt(strId)); // 문자열인 strID를 int로 변환
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				int bID = rs.getInt("bId");
+				String bName = rs.getString("bName");
+				String bTitle = rs.getString("bTitle");
+				String bContent = rs.getString("bContent");
+				Timestamp bDate = rs.getTimestamp("bDate");
+				int bHit = rs.getInt("bHit");
+				int bGroup = rs.getInt("bGroup");
+				int bStep = rs.getInt("bStep");
+				int bIndent = rs.getInt("bIndent");
+				
+				dto = new BDto(bID,bName,bTitle,bContent,bDate,bHit,bGroup,bStep,bIndent); // dto 객체 생성
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs != null) 
+					rs.close();
+				if(pstmt != null) 
+					pstmt.close();
+				if(conn != null) 
+					conn.close();					
+				}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return dto;
+	}
 	
+	public void modify(String bId, String bName, String bTitle, String bContent) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String query ="update mvc_board set bName=?, bTitle=?, bContent=? where bID=?";
+		
+		try {
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(query); // sql문 실행
+			
+			pstmt.setString(1, bName);
+			pstmt.setString(2, bTitle);
+			pstmt.setString(3, bContent);
+			pstmt.setInt(4, Integer.parseInt(bId));
+			
+			int dbFlag = pstmt.executeUpdate(); // 성공하면 1 반환
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) pstmt.close();
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void delete(String bId) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String query ="delete from mvc_board where bID=?";
+		
+		try {
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(query); // sql문 실행
+			
+			pstmt.setInt(1, Integer.parseInt(bId));
+			
+			int dbFlag = pstmt.executeUpdate(); // 성공하면 1 반환
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) pstmt.close();
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+
 }
